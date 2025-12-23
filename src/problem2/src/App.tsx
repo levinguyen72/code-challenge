@@ -17,13 +17,13 @@ function App() {
   const [sellAmount, setSellAmount] = useState('')
   const [buyAmount, setBuyAmount] = useState('')
   const [sellCurrency, setSellCurrency] = useState('ETH')
-  const [buyCurrency, setBuyCurrency] = useState('AAVE')
+  const [buyCurrency, setBuyCurrency] = useState('')
   const [sellBalance] = useState(2000)
   const [showSellDropdown, setShowSellDropdown] = useState(false)
   const [showBuyDropdown, setShowBuyDropdown] = useState(false)
   const [sellError, setSellError] = useState('')
   const sellAmountRef = useRef<HTMLInputElement>(null)
-  
+
   useEffect(() => {
     fetch('https://interview.switcheo.com/prices.json')
       .then(res => res.json())
@@ -72,8 +72,9 @@ function App() {
   }
 
   const getUSDValue = (amount: string, currency: string): string => {
-    if (!amount) return '$0.00'
+    if (!amount || !currency) return '$0.00'
     const price = getCurrencyPrice(currency)
+    if (!price) return '$0.00'
     const value = parseFloat(amount) * price
     return `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
   }
@@ -207,10 +208,10 @@ function App() {
         <nav className="nav-tabs">
           <button className="nav-tab active">Swap Tokens</button>
         </nav>
-        <div className="usdt-balance">
-          {sellBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDT
-        </div>
       </div>
+      <div className="usdt-balance">
+          Balance: {sellBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} USDT
+        </div> 
 
       <div className="swap-card">
         <div className="swap-section">
@@ -303,15 +304,17 @@ function App() {
             <div className="currency-section">
               <div className="currency-selector-wrapper">
                 <button className="currency-selector" onClick={() => setShowBuyDropdown(!showBuyDropdown)}>
-                  <img
-                    src={`https://raw.githubusercontent.com/Switcheo/token-icons/main/tokens/${buyCurrency}.svg`}
-                    alt={buyCurrency}
-                    className="currency-icon"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none'
-                    }}
-                  />
-                  <span className="currency-name">{buyCurrency}</span>
+                  {buyCurrency && (
+                    <img
+                      src={`https://raw.githubusercontent.com/Switcheo/token-icons/main/tokens/${buyCurrency}.svg`}
+                      alt={buyCurrency}
+                      className="currency-icon"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                      }}
+                    />
+                  )}
+                  <span className="currency-name">{buyCurrency || 'Select token'}</span>
                   <svg className="chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
