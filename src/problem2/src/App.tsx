@@ -173,7 +173,7 @@ function App() {
     const buyPrice = getCurrencyPrice(buyCurrency)
     if (!sellPrice || !buyPrice) return ''
     const rate = sellPrice / buyPrice
-    return `1 ${buyCurrency} = ${rate.toFixed(7)} ${sellCurrency} (${getUSDValue('1', buyCurrency)}) | ${getUSDValue('1', sellCurrency)}`
+    return `1 ${sellCurrency} = ${rate.toFixed(7)} ${buyCurrency} (${getUSDValue('1', sellCurrency)}) | ${getUSDValue('1', buyCurrency)}`
   }
 
   const availableCurrencies = prices.map(p => p.currency).sort()
@@ -348,9 +348,6 @@ function App() {
       {getExchangeRate() && (
         <div className="exchange-rate">
           {getExchangeRate()}
-          <svg className="rate-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
-            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
         </div>
       )}
     </div>
