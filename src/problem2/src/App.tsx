@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
+import { API_URL, TOKEN_ICONS_URL } from './constants'
 
 interface PriceData {
   currency: string
@@ -25,7 +26,7 @@ function App() {
   const sellAmountRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    fetch('https://interview.switcheo.com/prices.json')
+    fetch(API_URL)
       .then(res => res.json())
       .then((data: PriceData[]) => {
         const priceMap = new Map<string, { price: number; date: string }>()
@@ -236,7 +237,7 @@ function App() {
               <div className="currency-selector-wrapper">
                 <button className="currency-selector" onClick={() => setShowSellDropdown(!showSellDropdown)}>
                   <img
-                    src={`https://raw.githubusercontent.com/Switcheo/token-icons/main/tokens/${sellCurrency}.svg`}
+                    src={`${TOKEN_ICONS_URL}/${sellCurrency}.svg`}
                     alt={sellCurrency}
                     className="currency-icon"
                     onError={(e) => {
@@ -257,7 +258,7 @@ function App() {
                         onClick={() => handleSellCurrencySelect(currency)}
                       >
                         <img
-                          src={`https://raw.githubusercontent.com/Switcheo/token-icons/main/tokens/${currency}.svg`}
+                          src={`${TOKEN_ICONS_URL}/${currency}.svg`}
                           alt={currency}
                           className="dropdown-icon"
                           onError={(e) => {
@@ -306,7 +307,7 @@ function App() {
                 <button className="currency-selector" onClick={() => setShowBuyDropdown(!showBuyDropdown)}>
                   {buyCurrency && (
                     <img
-                      src={`https://raw.githubusercontent.com/Switcheo/token-icons/main/tokens/${buyCurrency}.svg`}
+                      src={`${TOKEN_ICONS_URL}/${buyCurrency}.svg`}
                       alt={buyCurrency}
                       className="currency-icon"
                       onError={(e) => {
@@ -328,7 +329,7 @@ function App() {
                         onClick={() => handleBuyCurrencySelect(currency)}
                       >
                         <img
-                          src={`https://raw.githubusercontent.com/Switcheo/token-icons/main/tokens/${currency}.svg`}
+                          src={`${TOKEN_ICONS_URL}/${currency}.svg`}
                           alt={currency}
                           className="dropdown-icon"
                           onError={(e) => {
