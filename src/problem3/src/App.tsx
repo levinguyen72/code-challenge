@@ -1,5 +1,7 @@
 // Component 1 (TemplateWalletPage): list out all error and non-optimal code in the code block below
 // Component 2 (WalletPage): refactored version of the code block 
+import { useMemo } from 'react';
+import { useWalletBalances, usePrices } from './hooks';
 interface WalletBalance {
   currency: string;
   amount: number;
@@ -10,11 +12,15 @@ interface FormattedWalletBalance extends WalletBalance {
   formatted: string;
 }
 
-interface Props extends BoxProps {}
+interface Props {
+  classes: {
+    row: string;
+  }
+}
 
 //component 1 (TemplateWalletPage): list out all error and non-optimal code in the code block below
 const TemplateWalletPage: React.FC<Props> = (props: Props) => {
-  // children doesnot exist on type of Props
+  // children doesnot exist on type of Props and it is not used
   const { children, ...rest } = props;
   // not import useWalletBalances and usePrices yet
   const balances = useWalletBalances();
@@ -90,9 +96,11 @@ const TemplateWalletPage: React.FC<Props> = (props: Props) => {
 }
 
 
+
+
 /* Component 2 (WalletPage): refactored version of the code block below */
 const WalletPage: React.FC<Props> = (props: Props) => {
-  const { children, ...rest } = props;
+  const {classes, ...rest } = props;
   const balances = useWalletBalances();
   const prices = usePrices();
 
@@ -128,7 +136,7 @@ const WalletPage: React.FC<Props> = (props: Props) => {
   const rows = useMemo(() => {
     return sortedBalances.map((balance: WalletBalance) => {
       const formattedAmount = balance.amount.toFixed();
-      const usdValue = prices[balance.currency] * balance.amount;
+      const usdValue = prices[balance.currency as keyof typeof prices] * balance.amount;
       
       return (
         <WalletRow
