@@ -30,13 +30,13 @@ function App() {
       .then(res => res.json())
       .then((data: PriceData[]) => {
         const priceMap = new Map<string, { price: number; date: string }>()
-        data.forEach(item => {
+        data?.forEach(item => {
           const existing = priceMap.get(item.currency)
           if (!existing || new Date(item.date) > new Date(existing.date)) {
             priceMap.set(item.currency, { price: item.price, date: item.date })
           }
         })
-        const uniquePrices: CurrencyPrice[] = Array.from(priceMap.entries()).map(([currency, { price }]) => ({
+        const uniquePrices: CurrencyPrice[] = Array.from(priceMap.entries())?.map(([currency, { price }]) => ({
           currency,
           price
         }))
@@ -181,7 +181,7 @@ function App() {
   const availableCurrencies = prices.map(p => p.currency).sort()
 
   const getSelectedSellCurrencyBalance = () => {
-    const priceData = prices.find(p => p.currency === sellCurrency)
+    const priceData = prices?.find(p => p?.currency === sellCurrency)
     const sellPrice = priceData?.price || 0
     if (sellPrice && sellPrice > 0) {
       return sellBalance / sellPrice
@@ -251,7 +251,7 @@ function App() {
                 </button>
                 {showSellDropdown && (
                   <div className="currency-dropdown">
-                    {availableCurrencies.map(currency => (
+                    {availableCurrencies?.map(currency => (
                       <button
                         key={currency}
                         className={`dropdown-item ${currency === sellCurrency ? 'active' : ''}`}
@@ -322,7 +322,7 @@ function App() {
                 </button>
                 {showBuyDropdown && (
                   <div className="currency-dropdown">
-                    {availableCurrencies.map(currency => (
+                    {availableCurrencies?.map(currency => (
                       <button
                         key={currency}
                         className={`dropdown-item ${currency === buyCurrency ? 'active' : ''}`}
